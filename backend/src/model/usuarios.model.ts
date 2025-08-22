@@ -63,4 +63,19 @@ export class UserModel {
     
     return null;
   }
+
+  public static async findByEmail(email: string): Promise<User | null> {
+    const user = await prisma.usuarios_web.findUnique({
+      where: {
+        email: email
+      }
+    });
+
+    if (user) {
+      // Prisma ya regresa el objeto de usuario directamente
+      return user;
+    }
+    
+    return null;
+  }
 }

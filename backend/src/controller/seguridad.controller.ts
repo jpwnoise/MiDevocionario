@@ -3,8 +3,10 @@ import { UserModel } from '../model/usuarios.model.ts';
 import bcrypt from 'bcrypt';
 
 export const ingresar = async (req: Request, res: Response) => {
-    const { username, password } = req.body;
-    const user = await UserModel.findByUsername(username);
+    console.log('Ingreso a la ruta de seguridad');
+    const { email, password } = req.body;
+    console.log('Datos de ingreso:', { email, password });
+    const user = await UserModel.findByEmail(email);
 
     if ( !user )
         return res.status(404).json({ mensaje: 'Credenciales invalidas' });

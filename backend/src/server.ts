@@ -1,9 +1,10 @@
-import { query } from './model/db_connection.ts';
 import express from 'express'; 
+import seguridadRouter from './rutas/seguridad.router.ts';
 
 const app = express();
 app.use(express.json());
+app.use('/api/seguridad', seguridadRouter);
 
-query('SELECT NOW()', [])
-  .then(res => console.log(res.rows))
-  .catch(err => console.error('Error executing query', err.stack));
+app.listen(3000, () => {
+    console.log('Servidor corriendo en http://localhost:3000');
+});

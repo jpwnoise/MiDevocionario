@@ -1,0 +1,17 @@
+<main>
+    <form (submit)="enviaForm($event)" [formGroup]="loginForm">
+        <h2>Ingresar</h2>
+        <div class="col-2">
+            <label for="email">Email:</label>
+            <input type="email" id="email" formControlName="email" >
+              @if(loginForm.get('email')?.invalid && loginForm.get('email')?.touched){
+                <p class="invalid-email">El email es obligatorio</p>
+              }
+        </div>
+        <div class="col-2">
+            <label for="password">Contraseña:</label>
+            <input type="password" id="password" formControlName="password" required>
+        </div>
+        <button type="submit" >Ingresar</button>
+    </form>
+</main>

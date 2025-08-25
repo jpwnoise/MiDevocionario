@@ -2,10 +2,15 @@ import type { Request, Response } from 'express';
 import { UserModel } from '../model/usuarios.model.ts';
 import bcrypt from 'bcrypt';
 
+declare module 'express-session' {
+    interface SessionData {
+        email?: string;
+    }
+}
+
 export const ingresar = async (req: Request, res: Response) => {
     console.log('Ingreso a la ruta de seguridad');
     const { email, password } = req.body;
-    console.log('Datos de ingreso:', { email, password });
     const user = await UserModel.findByEmail(email);
 
     if ( !user )
@@ -15,6 +20,13 @@ export const ingresar = async (req: Request, res: Response) => {
         return res.status(401).json({ mensaje: 'Credenciales invalidas' });
     }
 
+    req.session.email = email;
+
+    req.session.save(err => {
+    if (err) {
+        return res.status(500).json({ mensaje: 'Error guardando sesión' });
+    }});
+
     return res.status(200).json({ mensaje: 'Ingreso exitoso', usuario: user });
 
-}
+}   

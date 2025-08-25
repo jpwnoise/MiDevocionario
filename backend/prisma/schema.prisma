@@ -17,10 +17,10 @@ datasource db {
 model Rol {
   id           Int            @id @default(autoincrement())
   nombre       String         @unique
-  usuarios_web usuarios_web[]
+  usuarios_web Usuarios_web[]
 }
 
-model usuarios_web {
+model Usuarios_web {
   id              Int       @id @default(autoincrement())
   nombre          String?   @unique
   password        String
@@ -29,6 +29,27 @@ model usuarios_web {
   rol             Rol       @relation(fields: [rolId], references: [id])
   fecha_registro  DateTime? @default(now()) @map("fecha_registro")
   ultima_conexion DateTime? @map("ultima_conexion")
-
+  devocionarios Devocionario[]
   @@map("usuarios_web")
 }
+
+model Devocionario {
+  id          Int       @id @default(autoincrement())
+  nombre      String    @unique
+  descripcion String?
+  fecha_creacion DateTime @default(now())
+  oraciones   Oracion[] @relation("DevocionarioOraciones")
+  usuarioId      Int?      
+  usuario        Usuarios_web?  @relation(fields: [usuarioId], references: [id])
+  @@map("devocionarios")
+}
+
+model Oracion {
+  id             Int          @id @default(autoincrement())
+  titulo         String
+  contenido      String
+  fecha_creacion DateTime     @default(now())
+  devocionarios  Devocionario[] @relation("DevocionarioOraciones")
+  @@map("oracion")
+}
+

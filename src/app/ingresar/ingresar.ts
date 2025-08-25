@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+
 import {
   FormBuilder,
   FormGroup,
@@ -19,7 +21,7 @@ export class Ingresar {
 
   loginForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private http: HttpClient) {
+  constructor(private fb: FormBuilder, private http: HttpClient, private router: Router) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]]
@@ -37,7 +39,7 @@ export class Ingresar {
       const formData = this.loginForm.value;
       this.http.post('http://localhost:3000/api/seguridad/ingresar', formData).subscribe({
         next: (response) => {
-          console.log('Ingreso exitoso:', response);
+          this.router.navigate(['/tablero']);
           // Aquí puedes redirigir al usuario a otra página o mostrar un mensaje de éxito
         },
         error: (error) => {
